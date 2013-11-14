@@ -21,7 +21,7 @@ import sys, os, re, time, datetime, math, cmath, decimal, argparse;
 from PIL import Image, ImageDraw, ImageFont;
 if(__name__ == "__main__"):
  sys.tracebacklimit = 0;
-__version_info__ = (1, 1, 0, "RC 1");
+__version_info__ = (1, 2, 4, "RC 1");
 if(__version_info__[3]!=None):
  __version__ = str(__version_info__[0])+"."+str(__version_info__[1])+"."+str(__version_info__[2])+" "+str(__version_info__[3]);
 if(__version_info__[3]==None):
