@@ -132,7 +132,7 @@ while(int(str(curdate.month)+str(curdate.day))<int(str(enddate.month)+str(enddat
  oldspiritual = spiritual;
  awareness = CalcRhythm(birthdays, 48);
  if(getargs.verbose==True):
-  print("awareness: "+str(intellectual));
+  print("awareness: "+str(awareness));
  oldawareness = awareness;
  aesthetic = CalcRhythm(birthdays, 23);
  if(getargs.verbose==True):
