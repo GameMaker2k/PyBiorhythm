@@ -13,7 +13,7 @@
     Copyright 2013 Game Maker 2k - http://intdb.sourceforge.net/
     Copyright 2013 Kazuki Przyborowski - https://github.com/KazukiPrzyborowski
 
-    $FileInfo: biorhythm.py - Last Update: 11/14/2013 Ver. 1.2.4 RC 1 - Author: cooldude2k $
+    $FileInfo: biorhythm.py - Last Update: 11/14/2013 Ver. 1.2.4 RC 2 - Author: cooldude2k $
 '''
 
 from __future__ import division, absolute_import, print_function;
@@ -21,7 +21,7 @@ import sys, os, re, time, datetime, math, cmath, decimal, argparse;
 from PIL import Image, ImageDraw, ImageFont;
 if(__name__ == "__main__"):
  sys.tracebacklimit = 0;
-__version_info__ = (1, 2, 4, "RC 1");
+__version_info__ = (1, 2, 4, "RC 2");
 if(__version_info__[3]!=None):
  __version__ = str(__version_info__[0])+"."+str(__version_info__[1])+"."+str(__version_info__[2])+" "+str(__version_info__[3]);
 if(__version_info__[3]==None):
@@ -38,8 +38,14 @@ def drawColorRectangle( ctx, x1, y1, x2, y2, color ):
 # del(font);
 def drawColorRectangleAlt( ctx, x1, y1, x2, y2, color ):
  ctx.rectangle([(x1, y1), (x2, y2)], outline = color);
-def CalcRhythm(daysAlive, period):
- return decimal.Decimal(1 - math.sin((daysAlive % period) / period * 2 * math.pi) * 100).quantize(decimal.Decimal(1.0))
+def CalcRhythm(daysAlive, period, multi = 100):
+ return decimal.Decimal(1 - math.sin((daysAlive % period) / period * 2 * math.pi) * multi);
+def CalcRhythmAlt(daysAlive, period):
+ return decimal.Decimal(1 - math.sin((daysAlive % period) / period * 2 * math.pi));
+def CalcRoundRhythm(daysAlive, period, multi = 100):
+ return decimal.Decimal(1 - math.sin((daysAlive % period) / period * 2 * math.pi) * multi).quantize(decimal.Decimal(1.0));
+def CalcRoundRhythmAlt(daysAlive, period, multi = 100):
+ return decimal.Decimal(1 - math.sin((daysAlive % period) / period * 2 * math.pi)).quantize(decimal.Decimal(1.0));
 def csv(value):
  return map(str, value.split(","))
 parser = argparse.ArgumentParser(conflict_handler = "resolve", add_help = True);
@@ -119,7 +125,7 @@ while(int(curyear+curmonth+curday)<int(endyear+endmonth+endday)):
  curpos = (curnum-1) * int(getargs.scalex);
  if(getargs.verbose==True):
   print("date: "+str(curdate.month)+"/"+str(curdate.day)+"/"+str(curdate.year));
- emotional = CalcRhythm(birthdays, 28);
+ emotional = CalcRoundRhythm(birthdays, 28);
  if(curnum==1 and "emotional" in getargs.show):
   drawColorLine(biorhythm_img, curpos, (emotional + 104), curpos, (emotional + 104), (51, 128, 51));
  if(curnum>1 and "emotional" in getargs.show):
@@ -127,7 +133,7 @@ while(int(curyear+curmonth+curday)<int(endyear+endmonth+endday)):
  if(getargs.verbose==True and "emotional" in getargs.show):
   print("emotional: "+str(emotional));
  oldemotional = emotional;
- physical = CalcRhythm(birthdays, 23);
+ physical = CalcRoundRhythm(birthdays, 23);
  if(curnum==1 and "physical" in getargs.show):
   drawColorLine(biorhythm_img, curpos, (physical + 104), curpos, (physical + 104), (153, 51, 51));
  if(curnum>1 and "physical" in getargs.show):
@@ -135,7 +141,7 @@ while(int(curyear+curmonth+curday)<int(endyear+endmonth+endday)):
  if(getargs.verbose==True and "physical" in getargs.show):
   print("physical: "+str(physical));
  oldphysical = physical;
- intellectual = CalcRhythm(birthdays, 33);
+ intellectual = CalcRoundRhythm(birthdays, 33);
  if(curnum==1 and "intellectual" in getargs.show):
   drawColorLine(biorhythm_img, curpos, (intellectual + 104), curpos, (intellectual + 104), (51, 51, 170));
  if(curnum>1 and "intellectual" in getargs.show):
@@ -151,7 +157,7 @@ while(int(curyear+curmonth+curday)<int(endyear+endmonth+endday)):
  if(getargs.verbose==True and "average" in getargs.show):
   print("average: "+str(average));
  oldaverage = average;
- spiritual = CalcRhythm(birthdays, 53);
+ spiritual = CalcRoundRhythm(birthdays, 53);
  if(curnum==1 and "spiritual" in getargs.show):
   drawColorLine(biorhythm_img, curpos, (spiritual + 104), curpos, (spiritual + 104), (89, 51, 189));
  if(curnum>1 and "spiritual" in getargs.show):
@@ -159,7 +165,7 @@ while(int(curyear+curmonth+curday)<int(endyear+endmonth+endday)):
  if(getargs.verbose==True and "spiritual" in getargs.show):
   print("spiritual: "+str(spiritual));
  oldspiritual = spiritual;
- intuition = CalcRhythm(birthdays, 38);
+ intuition = CalcRoundRhythm(birthdays, 38);
  if(curnum==1 and "intuition" in getargs.show):
   drawColorLine(biorhythm_img, curpos, (intuition + 104), curpos, (intuition + 104), (100, 60, 51));
  if(curnum>1 and "intuition" in getargs.show):
@@ -167,7 +173,7 @@ while(int(curyear+curmonth+curday)<int(endyear+endmonth+endday)):
  if(getargs.verbose==True and "intuition" in getargs.show):
   print("intuition: "+str(intuition));
  oldintuition = intuition;
- awareness = CalcRhythm(birthdays, 48);
+ awareness = CalcRoundRhythm(birthdays, 48);
  if(curnum==1 and "awareness" in getargs.show):
   drawColorLine(biorhythm_img, curpos, (awareness + 104), curpos, (awareness + 104), (51, 138, 144));
  if(curnum>1 and "awareness" in getargs.show):
@@ -175,7 +181,7 @@ while(int(curyear+curmonth+curday)<int(endyear+endmonth+endday)):
  if(getargs.verbose==True and "awareness" in getargs.show):
   print("awareness: "+str(awareness));
  oldawareness = awareness;
- aesthetic = CalcRhythm(birthdays, 43);
+ aesthetic = CalcRoundRhythm(birthdays, 43);
  if(curnum==1 and "aesthetic" in getargs.show):
   drawColorLine(biorhythm_img, curpos, (aesthetic + 104), curpos, (aesthetic + 104), (171, 51, 141));
  if(curnum>1 and "aesthetic" in getargs.show):
