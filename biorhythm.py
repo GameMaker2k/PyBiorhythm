@@ -40,7 +40,6 @@ def drawColorRectangleAlt( ctx, x1, y1, x2, y2, color ):
  ctx.rectangle([(x1, y1), (x2, y2)], outline = color);
 def CalcRhythm(daysAlive, period):
  return decimal.Decimal(1 - math.sin((daysAlive % period) / period * 2 * math.pi) * 100).quantize(decimal.Decimal(1.0))
-
 parser = argparse.ArgumentParser(conflict_handler = "resolve", add_help = True);
 parser.add_argument("birthday", help = "enter your birthday in MM/DD/YYYY format");
 parser.add_argument("-c", "--cdate", default = None, help = "enter center date");
@@ -60,7 +59,7 @@ numdaysforward = int(getargs.forward);
 pre_biorhythm = Image.new("RGB", (((numdaysbackward + numdaysforward) - 1) * 10, 202));
 biorhythm_img = ImageDraw.Draw(pre_biorhythm);
 biorhythm_img.rectangle([(0, 0), (((numdaysbackward + numdaysforward) - 1) * 10, 202)], fill = (255, 255, 255));
-drawColorLine(biorhythm_img, 0, 100, ((numdaysbackward + numdaysforward) - 1) * 10, 100, (0, 0, 0));
+drawColorLine(biorhythm_img, 0, 101, ((numdaysbackward + numdaysforward) - 1) * 10, 101, (0, 0, 0));
 drawColorLine(biorhythm_img, ((numdaysbackward + numdaysforward) * 10) / 2, 0, ((numdaysbackward + numdaysforward) * 10) / 2, 202, (0, 0, 0));
 startloop = 0;
 endloop = numdaysbackward + numdaysforward;
@@ -95,7 +94,6 @@ curnum = 1;
 if(getargs.verbose==True):
  print("birthday: "+str(birthdate.month)+"/"+str(birthdate.day)+"/"+str(birthdate.year));
  print("");
-
 curyear=str(curdate.year);
 curmonth=str(curdate.month);
 if(len(curmonth)==1):
@@ -141,6 +139,10 @@ while(int(curyear+curmonth+curday)<int(endyear+endmonth+endday)):
  if(getargs.verbose==True):
   print("intellectual: "+str(intellectual));
  oldintellectual = intellectual;
+ average = decimal.Decimal((physical + emotional + intellectual) / 3).quantize(decimal.Decimal(1.0));
+ if(getargs.verbose==True):
+  print("average: "+str(average));
+ oldaverage = average;
  spiritual = CalcRhythm(birthdays, 53);
  if(getargs.verbose==True):
   print("spiritual: "+str(spiritual));
