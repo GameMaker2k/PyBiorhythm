@@ -104,9 +104,9 @@ while(int(str(curdate.month)+str(curdate.day))<int(str(enddate.month)+str(enddat
   print("date: "+str(curdate.month)+"/"+str(curdate.day)+"/"+str(curdate.year));
  physical = CalcRhythm(birthdays, 23);
  if(curnum==1):
-  drawColorLine(biorhythm_img, curpos, (physical + 100), curpos, (physical + 100), (0, 0, 255));
+  drawColorLine(biorhythm_img, curpos, (physical + 100), curpos, (physical + 100), (0, 255, 0));
  if(curnum>1):
-  drawColorLine(biorhythm_img, oldpos, (oldphysical + 100), curpos, (physical + 100), (0, 0, 255));
+  drawColorLine(biorhythm_img, oldpos, (oldphysical + 100), curpos, (physical + 100), (0, 255, 0));
  if(getargs.verbose==True):
   print("physical: "+str(physical));
  oldphysical = physical;
@@ -120,9 +120,9 @@ while(int(str(curdate.month)+str(curdate.day))<int(str(enddate.month)+str(enddat
  oldemotional = emotional;
  intellectual = CalcRhythm(birthdays, 33);
  if(curnum==1):
-  drawColorLine(biorhythm_img, curpos, (intellectual + 100), curpos, (intellectual + 100), (0, 255, 0));
+  drawColorLine(biorhythm_img, curpos, (intellectual + 100), curpos, (intellectual + 100), (0, 0, 255));
  if(curnum>1):
-  drawColorLine(biorhythm_img, oldpos, (oldintellectual + 100), curpos, (intellectual + 100), (0, 255, 0));
+  drawColorLine(biorhythm_img, oldpos, (oldintellectual + 100), curpos, (intellectual + 100), (0, 0, 255));
  if(getargs.verbose==True):
   print("intellectual: "+str(intellectual));
  oldintellectual = intellectual;
