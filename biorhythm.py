@@ -13,7 +13,7 @@
     Copyright 2013 Game Maker 2k - http://intdb.sourceforge.net/
     Copyright 2013 Kazuki Przyborowski - https://github.com/KazukiPrzyborowski
 
-    $FileInfo: biorhythm.py - Last Update: 11/14/2013 Ver. 1.0.5 RC 1 - Author: cooldude2k $
+    $FileInfo: biorhythm.py - Last Update: 11/14/2013 Ver. 1.1.0 RC 1 - Author: cooldude2k $
 '''
 
 from __future__ import division, absolute_import, print_function;
@@ -21,7 +21,7 @@ import sys, os, re, time, datetime, math, cmath, decimal, argparse;
 from PIL import Image, ImageDraw, ImageFont;
 if(__name__ == "__main__"):
  sys.tracebacklimit = 0;
-__version_info__ = (1, 0, 5, "RC 1");
+__version_info__ = (1, 1, 0, "RC 1");
 if(__version_info__[3]!=None):
  __version__ = str(__version_info__[0])+"."+str(__version_info__[1])+"."+str(__version_info__[2])+" "+str(__version_info__[3]);
 if(__version_info__[3]==None):
@@ -45,6 +45,7 @@ parser.add_argument("birthday", help = "enter your birthday in MM/DD/YYYY format
 parser.add_argument("-c", "--cdate", default = None, help = "enter center date");
 parser.add_argument("-b", "--backward", default = 15, help = "number of days to show before center date");
 parser.add_argument("-f", "--forward", default = 15, help = "number of days to show affter center date");
+parser.add_argument("-x", "--scalex", default = 10, help = "number of pixels per periods");
 parser.add_argument("-v", "--version", action = "version", version = __version__);
 parser.add_argument("-V", "--verbose", action = "store_true", help = "print various debugging information");
 parser.add_argument("-o", "--output", default = None, help = "input name of output image");
@@ -56,26 +57,26 @@ except ValueError:
  bdayinfo = time.strptime(getargs.birthday, "%m/%d/%Y");
 numdaysbackward = int(getargs.backward);
 numdaysforward = int(getargs.forward);
-pre_biorhythm = Image.new("RGB", (((numdaysbackward + numdaysforward) - 1) * 10, 202));
+pre_biorhythm = Image.new("RGB", (((numdaysbackward + numdaysforward) - 1) * int(getargs.scalex), 210));
 biorhythm_img = ImageDraw.Draw(pre_biorhythm);
-biorhythm_img.rectangle([(0, 0), (((numdaysbackward + numdaysforward) - 1) * 10, 202)], fill = (255, 255, 255));
-drawColorLine(biorhythm_img, 0, 101, ((numdaysbackward + numdaysforward) - 1) * 10, 101, (0, 0, 0));
-drawColorLine(biorhythm_img, ((numdaysbackward + numdaysforward) * 10) / 2, 0, ((numdaysbackward + numdaysforward) * 10) / 2, 202, (0, 0, 0));
+biorhythm_img.rectangle([(0, 0), (((numdaysbackward + numdaysforward) - 1) * int(getargs.scalex), 210)], fill = (255, 255, 255));
+drawColorLine(biorhythm_img, 0, 105, ((numdaysbackward + numdaysforward) - 1) * int(getargs.scalex), 105, (0, 0, 0));
+drawColorLine(biorhythm_img, ((numdaysbackward + numdaysforward) * int(getargs.scalex)) / 2, 0, ((numdaysbackward + numdaysforward) * int(getargs.scalex)) / 2, 210, (0, 0, 0));
 startloop = 0;
 endloop = numdaysbackward + numdaysforward;
 while(startloop<endloop):
  if(startloop==(numdaysbackward - 1)):
   startloop = startloop + 1;
- drawColorLine(biorhythm_img, (startloop + 1) * 10, 0, (startloop + 1) * 10, 5, (0, 0, 0));
- drawColorLine(biorhythm_img, (startloop + 1) * 10, 197, (startloop + 1) * 10, 202, (0, 0, 0));
+ drawColorLine(biorhythm_img, (startloop + 1) * int(getargs.scalex), 0, (startloop + 1) * int(getargs.scalex), 5, (0, 0, 0));
+ drawColorLine(biorhythm_img, (startloop + 1) * int(getargs.scalex), 205, (startloop + 1) * int(getargs.scalex), 210, (0, 0, 0));
  startloop = startloop + 1;
 startloop = 0;
 endloop = 19;
 while(startloop<endloop):
- if(startloop==9):
+ if(startloop==6):
   startloop = startloop + 1;
- drawColorLine(biorhythm_img, 0, (startloop + 1) * 10, 5, (startloop + 1) * 10, (0, 0, 0));
- drawColorLine(biorhythm_img, (((numdaysbackward + numdaysforward) - 1) * 10) - 5, (startloop + 1) * 10, ((numdaysbackward + numdaysforward) - 1) * 10, (startloop + 1) * 10, (0, 0, 0));
+ drawColorLine(biorhythm_img, 0, (startloop + 1) * 15, 5, (startloop + 1) * 15, (0, 0, 0));
+ drawColorLine(biorhythm_img, (((numdaysbackward + numdaysforward) - 1) * int(getargs.scalex)) - 5, (startloop + 1) * 15, ((numdaysbackward + numdaysforward) - 1) * int(getargs.scalex), (startloop + 1) * 15, (0, 0, 0));
  startloop = startloop + 1;
 if(not getargs.cdate==None):
  try:
@@ -112,30 +113,30 @@ while(int(curyear+curmonth+curday)<int(endyear+endmonth+endday)):
  birthdays = abs((curdate-birthdate).days);
  if(getargs.verbose==True):
   print("number: "+str(curnum));
- curpos = (curnum-1) * 10;
+ curpos = (curnum-1) * int(getargs.scalex);
  if(getargs.verbose==True):
   print("date: "+str(curdate.month)+"/"+str(curdate.day)+"/"+str(curdate.year));
  physical = CalcRhythm(birthdays, 23);
  if(curnum==1):
-  drawColorLine(biorhythm_img, curpos, (physical + 100), curpos, (physical + 100), (0, 255, 0));
+  drawColorLine(biorhythm_img, curpos, (physical + 104), curpos, (physical + 104), (0, 255, 0));
  if(curnum>1):
-  drawColorLine(biorhythm_img, oldpos, (oldphysical + 100), curpos, (physical + 100), (0, 255, 0));
+  drawColorLine(biorhythm_img, oldpos, (oldphysical + 104), curpos, (physical + 104), (0, 255, 0));
  if(getargs.verbose==True):
   print("physical: "+str(physical));
  oldphysical = physical;
  emotional = CalcRhythm(birthdays, 28);
  if(curnum==1):
-  drawColorLine(biorhythm_img, curpos, (emotional + 100), curpos, (emotional + 100), (255, 0, 0));
+  drawColorLine(biorhythm_img, curpos, (emotional + 104), curpos, (emotional + 104), (255, 0, 0));
  if(curnum>1):
-  drawColorLine(biorhythm_img, oldpos, (oldemotional + 100), curpos, (emotional + 100), (255, 0, 0));
+  drawColorLine(biorhythm_img, oldpos, (oldemotional + 104), curpos, (emotional + 104), (255, 0, 0));
  if(getargs.verbose==True):
   print("emotional: "+str(emotional));
  oldemotional = emotional;
  intellectual = CalcRhythm(birthdays, 33);
  if(curnum==1):
-  drawColorLine(biorhythm_img, curpos, (intellectual + 100), curpos, (intellectual + 100), (0, 0, 255));
+  drawColorLine(biorhythm_img, curpos, (intellectual + 104), curpos, (intellectual + 104), (0, 0, 255));
  if(curnum>1):
-  drawColorLine(biorhythm_img, oldpos, (oldintellectual + 100), curpos, (intellectual + 100), (0, 0, 255));
+  drawColorLine(biorhythm_img, oldpos, (oldintellectual + 104), curpos, (intellectual + 104), (0, 0, 255));
  if(getargs.verbose==True):
   print("intellectual: "+str(intellectual));
  oldintellectual = intellectual;
