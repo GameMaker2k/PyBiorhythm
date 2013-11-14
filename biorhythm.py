@@ -13,7 +13,7 @@
     Copyright 2013 Game Maker 2k - http://intdb.sourceforge.net/
     Copyright 2013 Kazuki Przyborowski - https://github.com/KazukiPrzyborowski
 
-    $FileInfo: biorhythm.py - Last Update: 11/14/2013 Ver. 1.1.0 RC 1 - Author: cooldude2k $
+    $FileInfo: biorhythm.py - Last Update: 11/14/2013 Ver. 1.2.4 RC 1 - Author: cooldude2k $
 '''
 
 from __future__ import division, absolute_import, print_function;
@@ -40,12 +40,15 @@ def drawColorRectangleAlt( ctx, x1, y1, x2, y2, color ):
  ctx.rectangle([(x1, y1), (x2, y2)], outline = color);
 def CalcRhythm(daysAlive, period):
  return decimal.Decimal(1 - math.sin((daysAlive % period) / period * 2 * math.pi) * 100).quantize(decimal.Decimal(1.0))
+def csv(value):
+ return map(str, value.split(","))
 parser = argparse.ArgumentParser(conflict_handler = "resolve", add_help = True);
 parser.add_argument("birthday", help = "enter your birthday in MM/DD/YYYY format");
 parser.add_argument("-c", "--cdate", default = None, help = "enter center date");
 parser.add_argument("-b", "--backward", default = 15, help = "number of days to show before center date");
 parser.add_argument("-f", "--forward", default = 15, help = "number of days to show affter center date");
 parser.add_argument("-x", "--scalex", default = 10, help = "number of pixels per periods");
+parser.add_argument("-s", "--show", default = "emotional,physical,intellectual", type=csv, help = "show theses on chart in csv format");
 parser.add_argument("-v", "--version", action = "version", version = __version__);
 parser.add_argument("-V", "--verbose", action = "store_true", help = "print various debugging information");
 parser.add_argument("-o", "--output", default = None, help = "input name of output image");
@@ -116,50 +119,70 @@ while(int(curyear+curmonth+curday)<int(endyear+endmonth+endday)):
  curpos = (curnum-1) * int(getargs.scalex);
  if(getargs.verbose==True):
   print("date: "+str(curdate.month)+"/"+str(curdate.day)+"/"+str(curdate.year));
- physical = CalcRhythm(birthdays, 23);
- if(curnum==1):
-  drawColorLine(biorhythm_img, curpos, (physical + 104), curpos, (physical + 104), (0, 255, 0));
- if(curnum>1):
-  drawColorLine(biorhythm_img, oldpos, (oldphysical + 104), curpos, (physical + 104), (0, 255, 0));
- if(getargs.verbose==True):
-  print("physical: "+str(physical));
- oldphysical = physical;
  emotional = CalcRhythm(birthdays, 28);
- if(curnum==1):
-  drawColorLine(biorhythm_img, curpos, (emotional + 104), curpos, (emotional + 104), (255, 0, 0));
- if(curnum>1):
-  drawColorLine(biorhythm_img, oldpos, (oldemotional + 104), curpos, (emotional + 104), (255, 0, 0));
- if(getargs.verbose==True):
+ if(curnum==1 and "emotional" in getargs.show):
+  drawColorLine(biorhythm_img, curpos, (emotional + 104), curpos, (emotional + 104), (51, 128, 51));
+ if(curnum>1 and "emotional" in getargs.show):
+  drawColorLine(biorhythm_img, oldpos, (oldemotional + 104), curpos, (emotional + 104), (51, 128, 51));
+ if(getargs.verbose==True and "emotional" in getargs.show):
   print("emotional: "+str(emotional));
  oldemotional = emotional;
+ physical = CalcRhythm(birthdays, 23);
+ if(curnum==1 and "physical" in getargs.show):
+  drawColorLine(biorhythm_img, curpos, (physical + 104), curpos, (physical + 104), (153, 51, 51));
+ if(curnum>1 and "physical" in getargs.show):
+  drawColorLine(biorhythm_img, oldpos, (oldphysical + 104), curpos, (physical + 104), (153, 51, 51));
+ if(getargs.verbose==True and "physical" in getargs.show):
+  print("physical: "+str(physical));
+ oldphysical = physical;
  intellectual = CalcRhythm(birthdays, 33);
- if(curnum==1):
-  drawColorLine(biorhythm_img, curpos, (intellectual + 104), curpos, (intellectual + 104), (0, 0, 255));
- if(curnum>1):
-  drawColorLine(biorhythm_img, oldpos, (oldintellectual + 104), curpos, (intellectual + 104), (0, 0, 255));
- if(getargs.verbose==True):
+ if(curnum==1 and "intellectual" in getargs.show):
+  drawColorLine(biorhythm_img, curpos, (intellectual + 104), curpos, (intellectual + 104), (51, 51, 170));
+ if(curnum>1 and "intellectual" in getargs.show):
+  drawColorLine(biorhythm_img, oldpos, (oldintellectual + 104), curpos, (intellectual + 104), (51, 51, 170));
+ if(getargs.verbose==True and "intellectual" in getargs.show):
   print("intellectual: "+str(intellectual));
  oldintellectual = intellectual;
  average = decimal.Decimal((physical + emotional + intellectual) / 3).quantize(decimal.Decimal(1.0));
- if(getargs.verbose==True):
+ if(curnum==1 and "average" in getargs.show):
+  drawColorLine(biorhythm_img, curpos, (average + 104), curpos, (average + 104), (0, 0, 0));
+ if(curnum>1 and "average" in getargs.show):
+  drawColorLine(biorhythm_img, oldpos, (oldaverage + 104), curpos, (average + 104), (0, 0, 0));
+ if(getargs.verbose==True and "average" in getargs.show):
   print("average: "+str(average));
  oldaverage = average;
  spiritual = CalcRhythm(birthdays, 53);
- if(getargs.verbose==True):
+ if(curnum==1 and "spiritual" in getargs.show):
+  drawColorLine(biorhythm_img, curpos, (spiritual + 104), curpos, (spiritual + 104), (89, 51, 189));
+ if(curnum>1 and "spiritual" in getargs.show):
+  drawColorLine(biorhythm_img, oldpos, (oldspiritual + 104), curpos, (spiritual + 104), (89, 51, 189));
+ if(getargs.verbose==True and "spiritual" in getargs.show):
   print("spiritual: "+str(spiritual));
  oldspiritual = spiritual;
- awareness = CalcRhythm(birthdays, 48);
- if(getargs.verbose==True):
-  print("awareness: "+str(awareness));
- oldawareness = awareness;
- aesthetic = CalcRhythm(birthdays, 23);
- if(getargs.verbose==True):
-  print("aesthetic: "+str(aesthetic));
- oldaesthetic = aesthetic;
  intuition = CalcRhythm(birthdays, 38);
- if(getargs.verbose==True):
+ if(curnum==1 and "intuition" in getargs.show):
+  drawColorLine(biorhythm_img, curpos, (intuition + 104), curpos, (intuition + 104), (100, 60, 51));
+ if(curnum>1 and "intuition" in getargs.show):
+  drawColorLine(biorhythm_img, oldpos, (oldintuition + 104), curpos, (intuition + 104), (100, 60, 51));
+ if(getargs.verbose==True and "intuition" in getargs.show):
   print("intuition: "+str(intuition));
  oldintuition = intuition;
+ awareness = CalcRhythm(birthdays, 48);
+ if(curnum==1 and "awareness" in getargs.show):
+  drawColorLine(biorhythm_img, curpos, (awareness + 104), curpos, (awareness + 104), (51, 138, 144));
+ if(curnum>1 and "awareness" in getargs.show):
+  drawColorLine(biorhythm_img, oldpos, (oldawareness + 104), curpos, (awareness + 104), (51, 138, 144));
+ if(getargs.verbose==True and "awareness" in getargs.show):
+  print("awareness: "+str(awareness));
+ oldawareness = awareness;
+ aesthetic = CalcRhythm(birthdays, 43);
+ if(curnum==1 and "aesthetic" in getargs.show):
+  drawColorLine(biorhythm_img, curpos, (aesthetic + 104), curpos, (aesthetic + 104), (171, 51, 141));
+ if(curnum>1 and "aesthetic" in getargs.show):
+  drawColorLine(biorhythm_img, oldpos, (oldaesthetic + 104), curpos, (aesthetic + 104), (171, 51, 141));
+ if(getargs.verbose==True and "aesthetic" in getargs.show):
+  print("aesthetic: "+str(aesthetic));
+ oldaesthetic = aesthetic;
  oldpos = curpos;
  if(getargs.verbose==True):
   print("");
