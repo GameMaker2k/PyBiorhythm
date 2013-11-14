@@ -13,7 +13,7 @@
     Copyright 2013 Game Maker 2k - http://intdb.sourceforge.net/
     Copyright 2013 Kazuki Przyborowski - https://github.com/KazukiPrzyborowski
 
-    $FileInfo: biorhythm.py - Last Update: 11/13/2013 Ver. 1.0.0 RC 1 - Author: cooldude2k $
+    $FileInfo: biorhythm.py - Last Update: 11/14/2013 Ver. 1.0.5 RC 1 - Author: cooldude2k $
 '''
 
 from __future__ import division, absolute_import, print_function;
@@ -21,7 +21,7 @@ import sys, os, re, time, datetime, math, cmath, decimal, argparse;
 from PIL import Image, ImageDraw, ImageFont;
 if(__name__ == "__main__"):
  sys.tracebacklimit = 0;
-__version_info__ = (1, 0, 0, "RC 1");
+__version_info__ = (1, 0, 5, "RC 1");
 if(__version_info__[3]!=None):
  __version__ = str(__version_info__[0])+"."+str(__version_info__[1])+"."+str(__version_info__[2])+" "+str(__version_info__[3]);
 if(__version_info__[3]==None):
@@ -95,7 +95,22 @@ curnum = 1;
 if(getargs.verbose==True):
  print("birthday: "+str(birthdate.month)+"/"+str(birthdate.day)+"/"+str(birthdate.year));
  print("");
-while(int(str(curdate.month)+str(curdate.day))<int(str(enddate.month)+str(enddate.day))):
+
+curyear=str(curdate.year);
+curmonth=str(curdate.month);
+if(len(curmonth)==1):
+ curmonth = "0"+curmonth;
+curday=str(curdate.day);
+if(len(curmonth)==1):
+ curday = "0"+curmonth;
+endyear=str(enddate.year);
+endmonth=str(enddate.month);
+if(len(endmonth)==1):
+ endmonth = "0"+endmonth;
+endday=str(enddate.day);
+if(len(endday)==1):
+ endday = "0"+endday;
+while(int(curyear+curmonth+curday)<int(endyear+endmonth+endday)):
  birthdays = abs((curdate-birthdate).days);
  if(getargs.verbose==True):
   print("number: "+str(curnum));
@@ -146,6 +161,13 @@ while(int(str(curdate.month)+str(curdate.day))<int(str(enddate.month)+str(enddat
  if(getargs.verbose==True):
   print("");
  curdate = curdate + datetime.timedelta(days = 1);
+ curyear=str(curdate.year);
+ curmonth=str(curdate.month);
+ if(len(curmonth)==1):
+  curmonth = "0"+curmonth;
+ curday=str(curdate.day);
+ if(len(curmonth)==1):
+  curday = "0"+curmonth;
  curnum = curnum + 1;
 if(getargs.display==True):
  pre_biorhythm.show();
