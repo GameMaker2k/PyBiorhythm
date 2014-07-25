@@ -9,11 +9,11 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     Revised BSD License for more details.
 
-    Copyright 2013 Cool Dude 2k - http://idb.berlios.de/
-    Copyright 2013 Game Maker 2k - http://intdb.sourceforge.net/
-    Copyright 2013 Kazuki Przyborowski - https://github.com/KazukiPrzyborowski
+    Copyright 2013-2014 Cool Dude 2k - http://idb.berlios.de/
+    Copyright 2013-2014 Game Maker 2k - http://intdb.sourceforge.net/
+    Copyright 2013-2014 Kazuki Przyborowski - https://github.com/KazukiPrzyborowski
 
-    $FileInfo: biorhythm.py - Last Update: 11/14/2013 Ver. 1.2.4 RC 2 - Author: cooldude2k $
+    $FileInfo: biorhythm.py - Last Update: 07/25/2014 Ver. 1.2.8 RC 1 - Author: cooldude2k $
 '''
 
 from __future__ import division, absolute_import, print_function;
@@ -21,7 +21,7 @@ import sys, os, re, time, datetime, math, cmath, decimal, argparse;
 from PIL import Image, ImageDraw, ImageFont;
 if(__name__ == "__main__"):
  sys.tracebacklimit = 0;
-__version_info__ = (1, 2, 4, "RC 2");
+__version_info__ = (1, 2, 8, "RC 1");
 if(__version_info__[3]!=None):
  __version__ = str(__version_info__[0])+"."+str(__version_info__[1])+"."+str(__version_info__[2])+" "+str(__version_info__[3]);
 if(__version_info__[3]==None):
