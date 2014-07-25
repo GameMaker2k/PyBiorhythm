@@ -57,9 +57,14 @@ parser.add_argument("-x", "--scalex", default = 10, help = "number of pixels per
 parser.add_argument("-s", "--show", default = "emotional,physical,intellectual", type=csv, help = "show theses on chart in csv format");
 parser.add_argument("-v", "--version", action = "version", version = __version__);
 parser.add_argument("-V", "--verbose", action = "store_true", help = "print various debugging information");
+parser.add_argument("-T", "--verbosetype", default = "text", help = "debugging information type");
 parser.add_argument("-o", "--output", default = None, help = "input name of output image");
 parser.add_argument("-d", "--display", action = "store_true", help = "display image");
 getargs = parser.parse_args();
+if(getargs.verbosetype=="string"):
+ getargs.verbosetype = "text";
+if(getargs.verbosetype!="text" and getargs.verbosetype!="csv"):
+ getargs.verbosetype = "text";
 try:
  bdayinfo = time.strptime(getargs.birthday, "%m/%d/%y");
 except ValueError:
@@ -102,8 +107,10 @@ enddate = currentdate + datetime.timedelta(days = numdaysforward);
 curdate = startdate;
 curnum = 1;
 if(getargs.verbose==True):
- print("birthday: "+str(birthdate.month)+"/"+str(birthdate.day)+"/"+str(birthdate.year));
- print("");
+ if(getargs.verbosetype=="csv"):
+  biorhythmone = ["number", "date"];
+  biorhythmone = biorhythmone + list(getargs.show);
+  print(", ".join(biorhythmone));
 curyear=str(curdate.year);
 curmonth=str(curdate.month);
 if(len(curmonth)==1):
@@ -121,17 +128,24 @@ if(len(endday)==1):
 while(int(curyear+curmonth+curday)<int(endyear+endmonth+endday)):
  birthdays = abs((curdate-birthdate).days);
  if(getargs.verbose==True):
-  print("number: "+str(curnum));
+  if(getargs.verbosetype=="text"):
+   print("number: "+str(curnum));
  curpos = (curnum-1) * int(getargs.scalex);
  if(getargs.verbose==True):
-  print("date: "+str(curdate.month)+"/"+str(curdate.day)+"/"+str(curdate.year));
+  if(getargs.verbosetype=="text"):
+   print("date: "+str(curdate.month)+"/"+str(curdate.day)+"/"+str(curdate.year));
+  if(getargs.verbosetype=="csv"):
+   biorhythmtwo = [str(curnum), str(curdate.month)+"/"+str(curdate.day)+"/"+str(curdate.year)];
  emotional = CalcRoundRhythm(birthdays, 28);
  if(curnum==1 and "emotional" in getargs.show):
   drawColorLine(biorhythm_img, curpos, (emotional + 104), curpos, (emotional + 104), (51, 128, 51));
  if(curnum>1 and "emotional" in getargs.show):
   drawColorLine(biorhythm_img, oldpos, (oldemotional + 104), curpos, (emotional + 104), (51, 128, 51));
  if(getargs.verbose==True and "emotional" in getargs.show):
-  print("emotional: "+str(emotional));
+  if(getargs.verbosetype=="text"):
+   print("emotional: "+str(emotional));
+  if(getargs.verbosetype=="csv"):
+   biorhythmtwo.append(str(emotional));
  oldemotional = emotional;
  physical = CalcRoundRhythm(birthdays, 23);
  if(curnum==1 and "physical" in getargs.show):
@@ -139,7 +153,10 @@ while(int(curyear+curmonth+curday)<int(endyear+endmonth+endday)):
  if(curnum>1 and "physical" in getargs.show):
   drawColorLine(biorhythm_img, oldpos, (oldphysical + 104), curpos, (physical + 104), (153, 51, 51));
  if(getargs.verbose==True and "physical" in getargs.show):
-  print("physical: "+str(physical));
+  if(getargs.verbosetype=="text"):
+   print("physical: "+str(physical));
+  if(getargs.verbosetype=="csv"):
+   biorhythmtwo.append(str(physical));
  oldphysical = physical;
  intellectual = CalcRoundRhythm(birthdays, 33);
  if(curnum==1 and "intellectual" in getargs.show):
@@ -147,7 +164,10 @@ while(int(curyear+curmonth+curday)<int(endyear+endmonth+endday)):
  if(curnum>1 and "intellectual" in getargs.show):
   drawColorLine(biorhythm_img, oldpos, (oldintellectual + 104), curpos, (intellectual + 104), (51, 51, 170));
  if(getargs.verbose==True and "intellectual" in getargs.show):
-  print("intellectual: "+str(intellectual));
+  if(getargs.verbosetype=="text"):
+   print("intellectual: "+str(intellectual));
+  if(getargs.verbosetype=="csv"):
+   biorhythmtwo.append(str(intellectual));
  oldintellectual = intellectual;
  average = decimal.Decimal((physical + emotional + intellectual) / 3).quantize(decimal.Decimal(1.0));
  if(curnum==1 and "average" in getargs.show):
@@ -155,7 +175,10 @@ while(int(curyear+curmonth+curday)<int(endyear+endmonth+endday)):
  if(curnum>1 and "average" in getargs.show):
   drawColorLine(biorhythm_img, oldpos, (oldaverage + 104), curpos, (average + 104), (0, 0, 0));
  if(getargs.verbose==True and "average" in getargs.show):
-  print("average: "+str(average));
+  if(getargs.verbosetype=="text"):
+   print("average: "+str(average));
+  if(getargs.verbosetype=="csv"):
+   biorhythmtwo.append(str(average));
  oldaverage = average;
  spiritual = CalcRoundRhythm(birthdays, 53);
  if(curnum==1 and "spiritual" in getargs.show):
@@ -163,7 +186,10 @@ while(int(curyear+curmonth+curday)<int(endyear+endmonth+endday)):
  if(curnum>1 and "spiritual" in getargs.show):
   drawColorLine(biorhythm_img, oldpos, (oldspiritual + 104), curpos, (spiritual + 104), (89, 51, 189));
  if(getargs.verbose==True and "spiritual" in getargs.show):
-  print("spiritual: "+str(spiritual));
+  if(getargs.verbosetype=="text"):
+   print("spiritual: "+str(spiritual));
+  if(getargs.verbosetype=="csv"):
+   biorhythmtwo.append(str(spiritual));
  oldspiritual = spiritual;
  intuition = CalcRoundRhythm(birthdays, 38);
  if(curnum==1 and "intuition" in getargs.show):
@@ -172,6 +198,8 @@ while(int(curyear+curmonth+curday)<int(endyear+endmonth+endday)):
   drawColorLine(biorhythm_img, oldpos, (oldintuition + 104), curpos, (intuition + 104), (100, 60, 51));
  if(getargs.verbose==True and "intuition" in getargs.show):
   print("intuition: "+str(intuition));
+  if(getargs.verbosetype=="csv"):
+   biorhythmtwo.append(str(intuition));
  oldintuition = intuition;
  awareness = CalcRoundRhythm(birthdays, 48);
  if(curnum==1 and "awareness" in getargs.show):
@@ -179,7 +207,10 @@ while(int(curyear+curmonth+curday)<int(endyear+endmonth+endday)):
  if(curnum>1 and "awareness" in getargs.show):
   drawColorLine(biorhythm_img, oldpos, (oldawareness + 104), curpos, (awareness + 104), (51, 138, 144));
  if(getargs.verbose==True and "awareness" in getargs.show):
-  print("awareness: "+str(awareness));
+  if(getargs.verbosetype=="text"):
+   print("awareness: "+str(awareness));
+  if(getargs.verbosetype=="csv"):
+   biorhythmtwo.append(str(awareness));
  oldawareness = awareness;
  aesthetic = CalcRoundRhythm(birthdays, 43);
  if(curnum==1 and "aesthetic" in getargs.show):
@@ -187,11 +218,17 @@ while(int(curyear+curmonth+curday)<int(endyear+endmonth+endday)):
  if(curnum>1 and "aesthetic" in getargs.show):
   drawColorLine(biorhythm_img, oldpos, (oldaesthetic + 104), curpos, (aesthetic + 104), (171, 51, 141));
  if(getargs.verbose==True and "aesthetic" in getargs.show):
-  print("aesthetic: "+str(aesthetic));
+  if(getargs.verbosetype=="text"):
+   print("aesthetic: "+str(aesthetic));
+  if(getargs.verbosetype=="csv"):
+   biorhythmtwo.append(str(aesthetic));
  oldaesthetic = aesthetic;
  oldpos = curpos;
  if(getargs.verbose==True):
-  print("");
+  if(getargs.verbosetype=="text"):
+   print("");
+  if(getargs.verbosetype=="csv"):
+   print(", ".join(biorhythmtwo));
  curdate = curdate + datetime.timedelta(days = 1);
  curyear=str(curdate.year);
  curmonth=str(curdate.month);
