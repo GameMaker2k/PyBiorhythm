@@ -26,7 +26,7 @@ if(__version_info__[3]!=None):
 if(__version_info__[3]==None):
  __version__ = str(__version_info__[0])+"."+str(__version_info__[1])+"."+str(__version_info__[2]);
 
-imageoutlib = "cairosvg";
+imageoutlib = "pillow";
 
 def check_for_cairo():
  # PIL Support Check
