@@ -47,7 +47,10 @@ def CalcRoundRhythm(daysAlive, period, multi = 100):
 def CalcRoundRhythmAlt(daysAlive, period, multi = 100):
  return decimal.Decimal(1 - math.sin((daysAlive % period) / period * 2 * math.pi)).quantize(decimal.Decimal(1.0));
 def csv(value):
- return map(str, value.split(","))
+ if(sys.version[0]=="2"):
+  return map(str, value.split(","));
+ if(sys.version[0]>="3"):
+  return list(map(str, value.split(",")));
 parser = argparse.ArgumentParser(conflict_handler = "resolve", add_help = True);
 parser.add_argument("birthday", help = "enter your birthday in MM/DD/YYYY format");
 parser.add_argument("-c", "--cdate", default = None, help = "enter center date");
