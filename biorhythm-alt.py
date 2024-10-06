@@ -1,6 +1,7 @@
 import math
 from datetime import datetime
 
+
 def calculate_biorhythm(birth_date: datetime, target_date: datetime) -> dict:
     diff = target_date - birth_date
     days = diff.days
@@ -18,9 +19,11 @@ def calculate_biorhythm(birth_date: datetime, target_date: datetime) -> dict:
 
     return biorhythms
 
+
 def get_date_from_user(prompt: str) -> datetime:
     date_str = input(prompt)
     return datetime.strptime(date_str, "%Y-%m-%d")
+
 
 def main():
     print("Biorhythm Calculator")
@@ -31,6 +34,7 @@ def main():
 
     for name, value in biorhythms.items():
         print(f"{name}: {value:.2f}")
+
 
 if __name__ == "__main__":
     main()
