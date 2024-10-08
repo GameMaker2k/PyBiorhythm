@@ -7,15 +7,58 @@ def calculate_biorhythm(birth_date: datetime, target_date: datetime) -> dict:
     days = diff.days
 
     biorhythms = {
-        "Physical": math.sin(2 * math.pi * days / 23),
-        "Emotional": math.sin(2 * math.pi * days / 28),
-        "Intellectual": math.sin(2 * math.pi * days / 33),
-        "Average": (math.sin(2 * math.pi * days / 23) + math.sin(2 * math.pi * days / 28) + math.sin(2 * math.pi * days / 33)) / 3,
-        "Spiritual": math.sin(2 * math.pi * days / 53),
-        "Intuition": math.sin(2 * math.pi * days / 38),
-        "Awareness": math.sin(2 * math.pi * days / 48),
-        "Aesthetic": math.sin(2 * math.pi * days / 43)
-    }
+        "Physical": math.sin(
+            2 *
+            math.pi *
+            days /
+            23),
+        "Emotional": math.sin(
+            2 *
+            math.pi *
+            days /
+            28),
+        "Intellectual": math.sin(
+            2 *
+            math.pi *
+            days /
+            33),
+        "Average": (
+            math.sin(
+                2 *
+                math.pi *
+                days /
+                23) +
+            math.sin(
+                2 *
+                math.pi *
+                days /
+                28) +
+            math.sin(
+                2 *
+                math.pi *
+                days /
+                33)) /
+        3,
+        "Spiritual": math.sin(
+            2 *
+            math.pi *
+            days /
+            53),
+        "Intuition": math.sin(
+            2 *
+            math.pi *
+            days /
+            38),
+        "Awareness": math.sin(
+            2 *
+            math.pi *
+            days /
+            48),
+        "Aesthetic": math.sin(
+            2 *
+            math.pi *
+            days /
+            43)}
 
     return biorhythms
 
