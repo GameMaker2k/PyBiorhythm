@@ -426,7 +426,8 @@ while (startloop < endloop):
     drawColorLine(biorhythm_img, 0, (startloop + 1) *
                   15, 5, (startloop + 1) * 15, (0, 0, 0))
     drawColorLine(biorhythm_img,
-                  (((numdaysbackward + numdaysforward) - 1) * int(getargs.scalex)) - 5,
+                  (((numdaysbackward + numdaysforward) - 1)
+                   * int(getargs.scalex)) - 5,
                   (startloop + 1) * 15,
                   ((numdaysbackward + numdaysforward) - 1) * int(getargs.scalex),
                   (startloop + 1) * 15,
